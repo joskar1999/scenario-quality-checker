@@ -1,24 +1,33 @@
 package com.lecimy.checker.controller;
 
+import com.lecimy.checker.model.Scenario;
+import com.lecimy.checker.service.ScenarioCounterContext;
+import com.lecimy.checker.service.ScenarioKeywordsCounter;
+import com.lecimy.checker.service.ScenarioStepsCounter;
 import io.vertx.core.json.JsonObject;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/scenario")
 public class ScenarioController {
 
+    private final ScenarioCounterContext scenarioCounter;
+
+    public ScenarioController(ScenarioCounterContext scenarioCounter) {
+        this.scenarioCounter = scenarioCounter;
+    }
+
     @PostMapping("/steps")
-    public ResponseEntity<JsonObject> getStepsAmount() {
-        return ResponseEntity.ok(new JsonObject().put("key", "value"));
+    public ResponseEntity<JsonObject> getStepsAmount(@RequestBody Scenario scenario) {
+        scenarioCounter.setStrategy(new ScenarioStepsCounter());
+        return ResponseEntity.ok(new JsonObject().put("steps", scenarioCounter.countSteps(scenario.getSteps())));
     }
 
     @PostMapping("keywords")
-    public ResponseEntity<JsonObject> getKeywordsAmount() {
-        return ResponseEntity.ok(new JsonObject().put("key", "value"));
+    public ResponseEntity<JsonObject> getKeywordsAmount(@RequestBody Scenario scenario) {
+        scenarioCounter.setStrategy(new ScenarioKeywordsCounter());
+        return ResponseEntity.ok(new JsonObject().put("keywords", scenarioCounter.countSteps(scenario.getSteps())));
     }
 
     @PostMapping("/noActor")
