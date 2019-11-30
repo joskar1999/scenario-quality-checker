@@ -1,0 +1,34 @@
+{
+  "title": "dodanie ksiazki",
+  "actors": [
+    "bibliotekarz",
+    "wozny"
+  ],
+  "systemActors": [
+    "system"
+  ],
+  "steps": [
+    {
+      "description": "pierwszy krok",
+      "subSteps": []
+    },
+    {
+      "description": "drugi krok",
+      "subSteps": [
+        {
+          "description": "podkrok drugiego kroku",
+          "subSteps": [
+            {
+              "description": "podkrok podkroku",
+              "subSteps": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "description": "ostatni krok",
+      "subSteps": []
+    }
+  ]
+}
