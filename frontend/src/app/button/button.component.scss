@@ -1,0 +1,44 @@
+:host {
+  $circle-size: 40px;
+  $circle-color: forestgreen;
+  $plus-size: 20px;
+  $plus-width: 5px;
+  $plus-horizontal-part-position-offset: $plus-size/2-$plus-width/2;
+  cursor: pointer;
+
+  .circle {
+    height: $circle-size;
+    width: $circle-size;
+    background-color: forestgreen;
+    border-radius: 50%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &:hover {
+      background-color: #66ff33;
+    }
+
+    &:active {
+      background-color: #33cc33;
+    }
+
+    .cross {
+      background: white;
+      height: $plus-size;
+      position: relative;
+      width: $plus-width;
+
+      &:after {
+        background: white;
+        content: "";
+        height: $plus-width;
+        left: -$plus-horizontal-part-position-offset;
+        position: absolute;
+        top: $plus-horizontal-part-position-offset;
+        width: $plus-size;
+      }
+    }
+  }
+}
