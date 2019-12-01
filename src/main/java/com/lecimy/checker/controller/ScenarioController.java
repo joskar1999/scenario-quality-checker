@@ -2,11 +2,7 @@ package com.lecimy.checker.controller;
 
 import com.lecimy.checker.model.*;
 import com.lecimy.checker.service.*;
-import io.vertx.core.json.JsonObject;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/scenario")
