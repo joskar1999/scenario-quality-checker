@@ -1,10 +1,12 @@
 package com.lecimy.checker.controller;
 
-import com.lecimy.checker.model.Scenario;
+import com.lecimy.checker.model.*;
 import com.lecimy.checker.service.*;
 import io.vertx.core.json.JsonObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/scenario")
@@ -27,32 +29,31 @@ public class ScenarioController {
     }
 
     @PostMapping("/steps")
-    public ResponseEntity<JsonObject> getStepsAmount(@RequestBody Scenario scenario) {
+    public StepsResponse getStepsAmount(@RequestBody Scenario scenario) {
         scenarioCounter.setStrategy(new ScenarioStepsCounter());
-        return ResponseEntity.ok(new JsonObject().put("steps", scenarioCounter.countSteps(scenario.getSteps())));
+        return new StepsResponse(scenarioCounter.countSteps(scenario.getSteps()));
     }
 
     @PostMapping("/keywords")
-    public ResponseEntity<JsonObject> getKeywordsAmount(@RequestBody Scenario scenario) {
+    public KeywordsResponse getKeywordsAmount(@RequestBody Scenario scenario) {
         scenarioCounter.setStrategy(new ScenarioKeywordsCounter());
-        return ResponseEntity.ok(new JsonObject().put("keywords", scenarioCounter.countSteps(scenario.getSteps())));
+        return new KeywordsResponse(scenarioCounter.countSteps(scenario.getSteps()));
     }
 
-    @PostMapping("/noActor")
-    public ResponseEntity<JsonObject> getStepsWithoutActor(@RequestBody Scenario scenario) {
-        return ResponseEntity.ok(
-            new JsonObject().put("stepsWithoutActors", noActorsService.findStepsWithNoActorProvided(scenario)));
+    @PostMapping("/no-actor")
+    public NoActorResponse getStepsWithoutActor(@RequestBody Scenario scenario) {
+        return new NoActorResponse(noActorsService.findStepsWithNoActorProvided(scenario));
     }
 
     @PostMapping("/documentation")
-    public ResponseEntity<JsonObject> getPrettyPrintedScenario(@RequestBody Scenario scenario) {
-        return ResponseEntity.ok(new JsonObject().put("prettyPrinted", prettyPrinter.prettyPrint(scenario)));
+    public DocumentationResponse getPrettyPrintedScenario(@RequestBody Scenario scenario) {
+        return new DocumentationResponse(prettyPrinter.prettyPrint(scenario));
     }
 
     @PostMapping("/{level}")
-    public ResponseEntity<JsonObject> getScenariosAtProvidedLevel(@RequestBody Scenario scenario,
-                                                                  @PathVariable Integer level) {
-        return ResponseEntity.ok(
-            new JsonObject().put("flattedScenario", flattingService.flatScenario(scenario, level)));
+    public FlattenScenarioResponse getScenariosAtProvidedLevel(
+            @RequestBody Scenario scenario,
+            @PathVariable Integer level) {
+        return new FlattenScenarioResponse(flattingService.flatScenario(scenario, level));
     }
 }

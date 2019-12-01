@@ -1,7 +1,36 @@
 :host {
   $form-container-width: 600px;
   display: flex;
-  justify-content: center;
+  flex-flow: column;
+  align-items: center;
+
+  .button {
+    border: solid 2px forestgreen;
+    cursor: pointer;
+    background-color: #99ff66;
+    padding: 10px;
+    margin: 20px;
+    border-radius: 4px;
+    font-weight: bold;
+
+    &:hover, &:active {
+      box-shadow: 0 0.5em 0.5em -0.4em #66ff33;
+      transform: translateY(-0.25em);
+    }
+
+    &:active {
+      background-color: #33cc33;
+    }
+  }
+
+  .steps-without-actors {
+    display: flex;
+    flex-flow: column;
+
+    .step-without-actor {
+      border-bottom: 1px solid #d9d9d9;
+    }
+  }
 
   .form-container {
     width: $form-container-width;
@@ -25,29 +54,25 @@
       }
     }
 
-
-    .create-scenario-buttons-container {
+    .upload-scenario {
       display: flex;
       justify-content: center;
 
-      .button {
-        border: solid 2px forestgreen;
-        cursor: pointer;
-        background-color: #99ff66;
-        padding: 10px;
-        margin: 20px;
-        border-radius: 4px;
-        font-weight: bold;
-
-        &:hover, &:active {
-          box-shadow: 0 0.5em 0.5em -0.4em #66ff33;
-          transform: translateY(-0.25em);
-        }
-
-        &:active {
-          background-color: #33cc33;
-        }
+      .upload-input {
+        width: 500px;
+        height: 500px;
       }
+    }
+
+    .choose-scenario-buttons-container {
+      display: flex;
+      justify-content: center;
+    }
+
+    .submit-container {
+      display: flex;
+      align-items: center;
+      flex-flow: column;
     }
   }
 
