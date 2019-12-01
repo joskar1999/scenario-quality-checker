@@ -16,11 +16,14 @@ public class ScenarioController {
 
     private final ScenarioFlattingService flattingService;
 
+    private final PrettyPrintService prettyPrinter;
+
     public ScenarioController(ScenarioCounterContext scenarioCounter, NoActorStepsFinderService noActorsService,
-                              ScenarioFlattingService flattingService) {
+                              ScenarioFlattingService flattingService, PrettyPrintService prettyPrinter) {
         this.scenarioCounter = scenarioCounter;
         this.noActorsService = noActorsService;
         this.flattingService = flattingService;
+        this.prettyPrinter = prettyPrinter;
     }
 
     @PostMapping("/steps")
@@ -42,8 +45,8 @@ public class ScenarioController {
     }
 
     @PostMapping("/documentation")
-    public ResponseEntity<JsonObject> getPrettyPrintedScenario() {
-        return ResponseEntity.ok(new JsonObject().put("key", "value"));
+    public ResponseEntity<JsonObject> getPrettyPrintedScenario(@RequestBody Scenario scenario) {
+        return ResponseEntity.ok(new JsonObject().put("prettyPrinted", prettyPrinter.prettyPrint(scenario)));
     }
 
     @PostMapping("/{level}")
