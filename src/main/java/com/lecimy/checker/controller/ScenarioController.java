@@ -1,10 +1,7 @@
 package com.lecimy.checker.controller;
 
 import com.lecimy.checker.model.Scenario;
-import com.lecimy.checker.service.NoActorStepsFinderService;
-import com.lecimy.checker.service.ScenarioCounterContext;
-import com.lecimy.checker.service.ScenarioKeywordsCounter;
-import com.lecimy.checker.service.ScenarioStepsCounter;
+import com.lecimy.checker.service.*;
 import io.vertx.core.json.JsonObject;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,9 +14,13 @@ public class ScenarioController {
 
     private final NoActorStepsFinderService noActorsService;
 
-    public ScenarioController(ScenarioCounterContext scenarioCounter, NoActorStepsFinderService noActorsService) {
+    private final ScenarioFlattingService flattingService;
+
+    public ScenarioController(ScenarioCounterContext scenarioCounter, NoActorStepsFinderService noActorsService,
+                              ScenarioFlattingService flattingService) {
         this.scenarioCounter = scenarioCounter;
         this.noActorsService = noActorsService;
+        this.flattingService = flattingService;
     }
 
     @PostMapping("/steps")
@@ -46,7 +47,9 @@ public class ScenarioController {
     }
 
     @PostMapping("/{level}")
-    public ResponseEntity<JsonObject> getScenariosAtProvidedLevel(@PathVariable Integer level) {
-        return ResponseEntity.ok(new JsonObject().put("key", "value"));
+    public ResponseEntity<JsonObject> getScenariosAtProvidedLevel(@RequestBody Scenario scenario,
+                                                                  @PathVariable Integer level) {
+        return ResponseEntity.ok(
+            new JsonObject().put("flattedScenario", flattingService.flatScenario(scenario, level)));
     }
 }
