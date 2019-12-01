@@ -9,6 +9,13 @@ import java.util.List;
 @Service
 public class ScenarioFlattingService {
 
+    /**
+     * This method will flat scenario to desired level
+     *
+     * @param scenario - scenario provided by the user
+     * @param level    - level on which other sub-steps should be cut
+     * @return - flattened scenario
+     */
     public List<Step> flatScenario(Scenario scenario, int level) {
         Scenario toFlat = new Scenario(scenario);
         flatScenario(toFlat.getSteps(), level, 1);

@@ -13,6 +13,12 @@ import java.util.stream.Stream;
 @Service
 public class NoActorStepsFinderService {
 
+    /**
+     * This method produces list with steps not containing actors
+     *
+     * @param scenario - scenario provided by user
+     * @return - list containing steps without actors
+     */
     public List<String> findStepsWithNoActorProvided(Scenario scenario) {
         ArrayList<String> actors = (ArrayList<String>) Stream.concat(
             scenario.getActors().stream(), scenario.getSystemActors().stream())

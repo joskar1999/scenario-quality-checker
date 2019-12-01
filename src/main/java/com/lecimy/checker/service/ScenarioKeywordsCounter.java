@@ -8,6 +8,12 @@ import java.util.List;
 
 public class ScenarioKeywordsCounter implements ScenarioCounter {
 
+    /**
+     * This method counts number of steps containing keywords
+     *
+     * @param steps - list of steps provided by user
+     * @return - number of all steps containing keywords in provided scenario
+     */
     @Override
     public int countSteps(List<Step> steps) {
         int nodes = 0;
