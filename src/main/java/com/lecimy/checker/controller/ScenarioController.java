@@ -32,7 +32,7 @@ public class ScenarioController {
         return ResponseEntity.ok(new JsonObject().put("steps", scenarioCounter.countSteps(scenario.getSteps())));
     }
 
-    @PostMapping("keywords")
+    @PostMapping("/keywords")
     public ResponseEntity<JsonObject> getKeywordsAmount(@RequestBody Scenario scenario) {
         scenarioCounter.setStrategy(new ScenarioKeywordsCounter());
         return ResponseEntity.ok(new JsonObject().put("keywords", scenarioCounter.countSteps(scenario.getSteps())));
