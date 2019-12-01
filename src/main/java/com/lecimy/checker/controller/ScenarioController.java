@@ -1,6 +1,7 @@
 package com.lecimy.checker.controller;
 
 import com.lecimy.checker.model.Scenario;
+import com.lecimy.checker.service.NoActorStepsFinderService;
 import com.lecimy.checker.service.ScenarioCounterContext;
 import com.lecimy.checker.service.ScenarioKeywordsCounter;
 import com.lecimy.checker.service.ScenarioStepsCounter;
@@ -14,8 +15,11 @@ public class ScenarioController {
 
     private final ScenarioCounterContext scenarioCounter;
 
-    public ScenarioController(ScenarioCounterContext scenarioCounter) {
+    private final NoActorStepsFinderService noActorsService;
+
+    public ScenarioController(ScenarioCounterContext scenarioCounter, NoActorStepsFinderService noActorsService) {
         this.scenarioCounter = scenarioCounter;
+        this.noActorsService = noActorsService;
     }
 
     @PostMapping("/steps")
@@ -31,8 +35,9 @@ public class ScenarioController {
     }
 
     @PostMapping("/noActor")
-    public ResponseEntity<JsonObject> getStepsWithoutActor() {
-        return ResponseEntity.ok(new JsonObject().put("key", "value"));
+    public ResponseEntity<JsonObject> getStepsWithoutActor(@RequestBody Scenario scenario) {
+        return ResponseEntity.ok(
+            new JsonObject().put("stepsWithoutActors", noActorsService.findStepsWithNoActorProvided(scenario)));
     }
 
     @PostMapping("/documentation")
