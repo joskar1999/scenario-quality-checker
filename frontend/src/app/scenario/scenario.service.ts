@@ -23,7 +23,7 @@ export interface FlattenScenarioResponse {
   steps: Step [];
 }
 
-export const BASE_API_URL = 'http://localhost:8080/api/scenario';
+export const BASE_API_URL = '/api/scenario';
 
 @Injectable({providedIn: "root"})
 export class ScenarioService {
@@ -48,7 +48,7 @@ export class ScenarioService {
   }
 
   getScenariosAtProvidedLevel(scenario: Scenario, level: number): Observable<FlattenScenarioResponse> {
-    return this.httpClient.post<FlattenScenarioResponse>(BASE_API_URL + String(level), scenario);
+    return this.httpClient.post<FlattenScenarioResponse>(BASE_API_URL + '/' + String(level), scenario);
   }
 
 }

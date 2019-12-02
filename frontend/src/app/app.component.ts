@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Scenario, Step} from "./scenario/model/app-scenario.model";
-import {ScenarioService} from "./scenario/scenario.service";
+import {KeywordsResponse, ScenarioService} from "./scenario/scenario.service";
 
 @Component({
   selector: 'app-root',
@@ -22,21 +22,43 @@ import {ScenarioService} from "./scenario/scenario.service";
       <div class="upload-scenario" *ngIf="uploadScenarioActive">
         <textarea type="text" class="upload-input" [(ngModel)]="uploadedScenarioInput"></textarea>
       </div>
-      <div class="submit-container">
+      <div class="submit-container" *ngIf="uploadScenarioActive || createScenarioActive">
         <div class="submit-buttons-container">
-
+          <div class="button" (click)="submit()">Wyślij</div>
+          <div class="button" (click)="resetForm()">Zresetuj scenariusz</div>
         </div>
-        <div class="button" (click)="submit()">Wyślij</div>
-        <p>{{submitText}}</p>
+        <p>{{submitErrorMessage}}</p>
       </div>
     </div>
-    <div *ngIf="numberOfSteps">Liczba kroków wynosi {{numberOfSteps}}</div>
-    <div *ngIf="keywords">Liczba słów kluczowych wynosi {{keywords}}</div>
-    <div *ngIf="stepsWithoutActors" class="steps-without-actors">
-      Kroki bez aktora:
+    <div class="response" *ngIf="numberOfSteps">Liczba kroków wynosi {{numberOfSteps}}</div>
+    <div class="response" *ngIf="!!this.keywordsResponse">Liczba słów kluczowych
+      wynosi {{keywordsResponse.keywords}}</div>
+    <div *ngIf="stepsWithoutActors" class="steps-without-actors response">
+      <p style="font-weight: bold">Kroki bez aktora:</p>
       <div class="step-without-actor" *ngFor="let step of stepsWithoutActors">
         {{step}}
       </div>
+    </div>
+    <div *ngIf="documentationSteps" class="steps-without-actors response">
+      <p style="font-weight: bold">Ponumerowane kroki:</p>
+      <div class="step-without-actor" *ngFor="let step of documentationSteps">
+        {{step}}
+      </div>
+    </div>
+    <div class="flatten-scenario-container" *ngIf="scenarioSubmitted">
+      <div class="choose-level-container">
+        <div class="button" (click)="flattenScenario()">Pokaż scenariusz do wybranego poziomu</div>
+        <div class="combo-container">
+          <select (change)="level=+($event.target.value)">
+            <option value="3">3</option>
+            <option value="2">2</option>
+            <option value="1">1</option>
+          </select>
+        </div>
+      </div>
+      <pre *ngIf="flattenScenarioSteps">
+        {{getFlattenScenario()}}
+      </pre>
     </div>
   `,
   styleUrls: ['./app.component.scss']
@@ -46,12 +68,14 @@ export class AppComponent implements OnInit {
   createScenarioActive: boolean = false;
   uploadScenarioActive: boolean = false;
   uploadedScenarioInput: string;
-  submitText: string = '';
+  submitErrorMessage: string = '';
   numberOfSteps: number;
-  keywords: number;
+  keywordsResponse: KeywordsResponse;
   stepsWithoutActors: string [];
   documentationSteps: string [];
   flattenScenarioSteps: Step [];
+  scenarioSubmitted: boolean = false;
+  level: number = 2;
 
   constructor(private scenarioService: ScenarioService) {
   }
@@ -65,12 +89,18 @@ export class AppComponent implements OnInit {
     }
   }
 
+  getFlattenScenario(): string {
+    return JSON.stringify(this.flattenScenarioSteps, null, 2);
+  }
+
   resetForm(): void {
     this.scenario.title = '';
     this.scenario.actors = [];
     this.scenario.systemActors = [];
     this.scenario.steps = [];
-    this.submitText = '';
+    this.uploadedScenarioInput = '';
+    this.submitErrorMessage = '';
+    this.scenarioSubmitted = false;
   }
 
   isJson(text: string): boolean {
@@ -103,27 +133,35 @@ export class AppComponent implements OnInit {
     this.resetForm();
   }
 
+  flattenScenario(): void {
+    this.scenarioService.getScenariosAtProvidedLevel(this.scenario, this.level)
+      .subscribe(flattenScenarioResponse => {
+        this.flattenScenarioSteps = flattenScenarioResponse.steps;
+      });
+  }
+
   submit(): void {
-    if(this.isJsonScenarioObject(this.uploadedScenarioInput)){
-      this.submitText = 'Wysłano scenariusz';
+    if (this.isJsonScenarioObject(this.uploadedScenarioInput)) {
 
       this.scenarioService.getSteps(this.scenario).subscribe(steps => {
         this.numberOfSteps = steps.steps;
       });
 
-      this.scenarioService.getKeywordsAmount(this.scenario).subscribe( keywords => {
-        this.keywords = keywords.keywords;
+      this.scenarioService.getKeywordsAmount(this.scenario).subscribe(keywords => {
+        this.keywordsResponse = keywords;
       });
 
       this.scenarioService.getStepsWithoutActor(this.scenario).subscribe(steps => {
         this.stepsWithoutActors = steps.stepsWithoutActors;
       });
 
-      this.scenarioService.getPrettyPrintedScenario(this.scenario).subscribe(docuentation => {
-        this.documentationSteps = docuentation.documentationSteps;
-      })
+      this.scenarioService.getPrettyPrintedScenario(this.scenario).subscribe(documentatnion => {
+        this.documentationSteps = documentatnion.documentationSteps;
+      });
+
+      this.scenarioSubmitted = true;
     } else {
-      this.submitText = 'Popełniono błąd w strukturze jsonu scenariusza';
+      this.submitErrorMessage = 'Popełniono błąd w strukturze jsonu scenariusza';
     }
   }
 }
