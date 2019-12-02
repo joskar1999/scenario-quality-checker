@@ -10,6 +10,12 @@ import java.util.List;
 @Service
 public class PrettyPrintService {
 
+    /**
+     * This method produces pretty printed scenario
+     *
+     * @param scenario - scenario provided by user
+     * @return - list containing enumerated steps
+     */
     public List<String> prettyPrint(Scenario scenario) {
         return prettyPrint(scenario.getSteps(), "");
     }

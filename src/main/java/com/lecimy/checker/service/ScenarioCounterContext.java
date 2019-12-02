@@ -12,7 +12,13 @@ public class ScenarioCounterContext {
     @Setter
     private ScenarioCounter strategy;
 
-    public int countSteps(List<Step> scenario) {
-        return strategy.countSteps(scenario);
+    /**
+     * Counting steps in scenario
+     *
+     * @param steps - steps provided by user
+     * @return - number of steps in scenario
+     */
+    public int countSteps(List<Step> steps) {
+        return strategy.countSteps(steps);
     }
 }
