@@ -13,11 +13,13 @@ import {KeywordsResponse, ScenarioService} from "./scenario/scenario.service";
       <div class="create-scenario" *ngIf="createScenarioActive">
         <div class="row">
           <div class="label">
-            <p>Tytuł</p>
+            <p>title</p>
           </div>
           <input class="input" [(ngModel)]="scenario.title">
-          <add-button></add-button>
         </div>
+        <row-adder-string-row [(list)]="scenario.actors" label="actor"></row-adder-string-row>
+        <row-adder-string-row [(list)]="scenario.systemActors" label="system actor"></row-adder-string-row>
+        <row-adder-step-row [(steps)]="scenario.steps"></row-adder-step-row>
       </div>
       <div class="upload-scenario" *ngIf="uploadScenarioActive">
         <textarea type="text" class="upload-input" [(ngModel)]="uploadedScenarioInput"></textarea>
@@ -49,7 +51,7 @@ import {KeywordsResponse, ScenarioService} from "./scenario/scenario.service";
       <div class="choose-level-container">
         <div class="button" (click)="flattenScenario()">Pokaż scenariusz do wybranego poziomu</div>
         <div class="combo-container">
-          <select (change)="level=+($event.target.value)">
+          <select (change)="level = $event.target.value">
             <option value="3">3</option>
             <option value="2">2</option>
             <option value="1">1</option>
@@ -75,7 +77,7 @@ export class AppComponent implements OnInit {
   documentationSteps: string [];
   flattenScenarioSteps: Step [];
   scenarioSubmitted: boolean = false;
-  level: number = 2;
+  level: number = 3;
 
   constructor(private scenarioService: ScenarioService) {
   }
@@ -101,6 +103,11 @@ export class AppComponent implements OnInit {
     this.uploadedScenarioInput = '';
     this.submitErrorMessage = '';
     this.scenarioSubmitted = false;
+    this.numberOfSteps = undefined;
+    this.keywordsResponse = undefined;
+    this.stepsWithoutActors = undefined;
+    this.documentationSteps = undefined;
+    this.flattenScenarioSteps = undefined;
   }
 
   isJson(text: string): boolean {
@@ -141,7 +148,7 @@ export class AppComponent implements OnInit {
   }
 
   submit(): void {
-    if (this.isJsonScenarioObject(this.uploadedScenarioInput)) {
+    if (this.isJsonScenarioObject(this.uploadedScenarioInput) || this.createScenarioActive) {
 
       this.scenarioService.getSteps(this.scenario).subscribe(steps => {
         this.numberOfSteps = steps.steps;

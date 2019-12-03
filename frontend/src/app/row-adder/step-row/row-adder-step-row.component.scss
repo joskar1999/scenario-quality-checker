@@ -1,0 +1,11 @@
+@import "../../../styles";
+
+:host {
+  .row-adder-step-row-container {
+
+    .rows {
+      @include row;
+    }
+    @include row;
+  }
+}
