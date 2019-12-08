@@ -143,6 +143,8 @@ fabric.properties
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 /target
+/frontend/target
+/frontend/frontend.iml
 # End of https://www.gitignore.io/api/java,angular,intellij
 scenario-quality-checker.iml
 checker.iml

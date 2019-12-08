@@ -14,7 +14,7 @@ public class ScenarioStepsCounter implements ScenarioCounter {
      */
     @Override
     public int countSteps(List<Step> steps) {
-        if (steps.isEmpty()) {
+        if (steps == null) {
             return 0;
         } else {
             int nodes = 0;

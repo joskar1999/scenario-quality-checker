@@ -28,9 +28,10 @@ public class NoActorStepsFinderService {
 
     private List<String> findStepsWithNoActorProvided(List<Step> steps, List<String> actors) {
         ArrayList<String> noActorSteps = new ArrayList<>();
+        if (steps == null) return noActorSteps;
         steps.forEach(step -> {
             String[] firstWords = step.getDescription().split(" ");
-            if (Stream.of(Keywords.values()).anyMatch(k -> k.name().equals(firstWords[0]))) {
+            if (Stream.of(Keywords.values()).anyMatch(k -> k.name().equals(firstWords[0])) && firstWords.length > 1) {
                 checkIfActorNotInStep(actors, firstWords[1], step, noActorSteps);
             } else {
                 checkIfActorNotInStep(actors, firstWords[0], step, noActorSteps);
