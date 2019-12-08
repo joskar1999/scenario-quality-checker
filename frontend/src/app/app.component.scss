@@ -1,5 +1,6 @@
+@import "../styles";
+
 :host {
-  $form-container-width: 600px;
   display: flex;
   flex-flow: column;
   align-items: center;
@@ -39,20 +40,7 @@
     padding: 10px 20px;
 
     .create-scenario {
-      .row {
-        display: flex;
-        justify-content: space-between;
-        margin: 10px 0;
-
-        .label {
-          display: flex;
-          align-items: center;
-        }
-
-        .input {
-          width: $form-container-width - 200;
-        }
-      }
+      @include row;
     }
 
     .upload-scenario {

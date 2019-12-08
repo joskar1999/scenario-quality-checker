@@ -1,0 +1,14 @@
+Co jako zespó³ chcielibyœmy zacz¹æ robiæ?
+- spotykaæ siê o umówionej godzinie
+- przestudiowaæ gitignora, aby nie wrzucaæ do repozytorium niepotrzebnych plików
+
+Co jako zespó³ powinniœmy przestaæ robiæ?
+- organizowaæ zbyt wielu spotkañ
+- spóŸniaæ siê na spotkania
+- zaœmiecaæ repozytorium
+
+Co jako zespó³ powinniœmy kontynuowaæ robiæ?
+- dzieliæ obowi¹zki w sposób dla ka¿dego przejrzysty
+- dyskutowaæ w pe³nym komplecie
+- urz¹dzaæ dyskusje online
+ 
