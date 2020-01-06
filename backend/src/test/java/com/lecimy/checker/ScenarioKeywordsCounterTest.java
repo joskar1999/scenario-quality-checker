@@ -4,6 +4,8 @@ import com.lecimy.checker.model.Step;
 import com.lecimy.checker.service.ScenarioKeywordsCounter;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.mockito.InOrder;
+import org.mockito.Mockito;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,5 +62,32 @@ class ScenarioKeywordsCounterTest {
         step.setSubSteps(subSteps);
         steps.add(step);
         assertEquals(1, counter.countSteps(steps));
+    }
+
+    @Test
+    void shouldVerifyEmptyList() {
+        ScenarioKeywordsCounter service = Mockito.mock(ScenarioKeywordsCounter.class);
+        service.countSteps(null);
+        InOrder inOrder = Mockito.inOrder(service);
+        inOrder.verify(service).countSteps(null);
+    }
+
+    @Test
+    void shouldVerifyNonNullList() {
+        ScenarioKeywordsCounter service = Mockito.mock(ScenarioKeywordsCounter.class);
+        ArrayList<Step> steps = new ArrayList<>();
+        service.countSteps(steps);
+        InOrder inOrder = Mockito.inOrder(service);
+        inOrder.verify(service).countSteps(steps);
+    }
+
+    @Test
+    void shouldVerifyNonEmptyList() {
+        ScenarioKeywordsCounter service = Mockito.mock(ScenarioKeywordsCounter.class);
+        ArrayList<Step> steps = new ArrayList<>();
+        steps.add(new Step("step", null));
+        service.countSteps(steps);
+        InOrder inOrder = Mockito.inOrder(service);
+        inOrder.verify(service).countSteps(steps);
     }
 }
