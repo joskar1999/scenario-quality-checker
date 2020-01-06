@@ -13,7 +13,7 @@
     <packaging>pom</packaging>
     <name>checker</name>
     <description>Scenario quality checker</description>
-
+   
    <modules>
        <module>backend</module>
        <module>frontend</module>

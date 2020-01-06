@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"com.lecimy.checker"},{"l":"com.lecimy.checker.controller"},{"l":"com.lecimy.checker.model"},{"l":"com.lecimy.checker.service"}]
